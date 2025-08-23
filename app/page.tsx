@@ -246,16 +246,14 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50 to-zinc-50 dark:from-slate-900 dark:via-gray-900/20 dark:to-slate-800">
-      <header className="border-b bg-gradient-to-r from-green-600/90 to-orange-600/90 backdrop-blur-sm sticky top-0 z-10 shadow-lg">
+      <header className="border-b bg-gradient-to-r from-indigo-700 via-amber-400 to-red-500 backdrop-blur-sm sticky top-0 z-10 shadow-lg">
         <div className="container mx-auto px-4 py-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-                <Mail className="h-5 w-5 text-white" />
-              </div>
+            <div className="flex items-center gap-3">
+              <img src="/images/centrika-logo.svg" alt="Centrika Logo" className="h-8 w-8 rounded-lg shadow" />
               <div>
                 <h1 className="text-lg font-bold text-white">Centrika Email Management</h1>
-                <p className="text-green-100 text-xs">Professional Email Standards & Composition</p>
+                <p className="text-gray-100 text-xs">Professional Email Standards & Composition</p>
               </div>
             </div>
 
@@ -274,7 +272,7 @@ export default function HomePage() {
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-xl">
-                    <Info className="h-5 w-5 text-blue-600" />
+                    <Info className="h-5 w-5 text-blue-600 hover" />
                     How to Use the Email Subject Generator
                   </DialogTitle>
                 </DialogHeader>
