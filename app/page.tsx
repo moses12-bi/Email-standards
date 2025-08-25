@@ -196,13 +196,46 @@ export default function HomePage() {
   const copyToClipboard = async () => {
     if (!isValid) return
 
-    try {
-      await navigator.clipboard.writeText(subjectLine)
-      setCopied(true)
-      toast.success("Subject line copied to clipboard!")
-      setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
-      toast.error("Failed to copy to clipboard")
+    // Modern API
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(subjectLine)
+        setCopied(true)
+        toast.success("Subject line copied to clipboard!")
+        setTimeout(() => setCopied(false), 2000)
+      } catch (err) {
+        toast.error("Failed to copy to clipboard")
+      }
+    } else {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea")
+      textArea.value = subjectLine
+      // Avoid scrolling to bottom
+      textArea.style.position = "fixed"
+      textArea.style.top = "0"
+      textArea.style.left = "0"
+      textArea.style.width = "2em"
+      textArea.style.height = "2em"
+      textArea.style.padding = "0"
+      textArea.style.border = "none"
+      textArea.style.outline = "none"
+      textArea.style.boxShadow = "none"
+      textArea.style.background = "transparent"
+      document.body.appendChild(textArea)
+      textArea.select()
+      try {
+        const successful = document.execCommand("copy")
+        if (successful) {
+          setCopied(true)
+          toast.success("Subject line copied to clipboard!")
+          setTimeout(() => setCopied(false), 2000)
+        } else {
+          toast.error("Failed to copy to clipboard")
+        }
+      } catch (err) {
+        toast.error("Failed to copy to clipboard")
+      }
+      document.body.removeChild(textArea)
     }
   }
 
@@ -728,7 +761,23 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="bg-white dark:bg-slate-700 p-2 rounded border border-slate-200 dark:border-slate-600">
-                  <code className="text-sm font-mono text-slate-800 dark:text-slate-200 break-all">{subjectLine}</code>
+                  <code className="text-sm font-mono text-slate-800 dark:text-slate-200 break-all">
+                    {(() => {
+                      if (!urgency) return subjectLine;
+                      // Split subjectLine by urgency value
+                      const parts = subjectLine.split(urgency);
+                      let color = "text-green-600";
+                      if (urgency === "HIGH") color = "text-red-600";
+                      else if (urgency === "MEDIUM") color = "text-orange-600";
+                      return (
+                        <>
+                          {parts[0]}
+                          <span className={color}>{urgency}</span>
+                          {parts[1] || ""}
+                        </>
+                      );
+                    })()}
+                  </code>
                 </div>
               </div>
             )}
